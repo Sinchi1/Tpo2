@@ -1,4 +1,27 @@
 package org.truskovski.math.trigo;
 
-public class Ctg {
+import org.truskovski.math.MathFunction;
+
+public class Ctg  implements MathFunction {
+
+    private final MathFunction cos;
+    private final MathFunction sin;
+
+    public Ctg(MathFunction cos, MathFunction sin) {
+        this.cos = cos;
+        this.sin = sin;
+    }
+
+    @Override
+    public double compute(double x) {
+
+        double s = sin.compute(x);
+        double c = cos.compute(x);
+
+        if (Math.abs(s) < 1e-12) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        return c / s;
+    }
 }

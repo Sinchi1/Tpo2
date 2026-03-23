@@ -1,4 +1,10 @@
 package org.truskovski.math.trigo;
 
-public class Sec {
+import org.truskovski.math.MathFunction;
+
+public class Sec implements MathFunction {
+    @Override
+    public double compute(double x) {
+        return 0;
+    }
 }
