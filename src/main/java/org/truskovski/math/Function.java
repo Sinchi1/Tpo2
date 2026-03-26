@@ -1,7 +1,8 @@
 package org.truskovski.math;
 
 import org.truskovski.math.log.Ln;
-import org.truskovski.math.log.LogFunctions;
+import org.truskovski.math.log.Log10;
+import org.truskovski.math.log.Log3;
 import org.truskovski.math.trigo.*;
 
 public class Function implements MathFunction{
@@ -14,8 +15,10 @@ public class Function implements MathFunction{
     Ctg ctg = new Ctg(cos, sin);
 
     Ln ln = new Ln();
-    LogFunctions logBase = new LogFunctions();
-    
+    Log3 log3 = new Log3(ln);
+    Log10 log10 = new Log10(ln);
+
+
     @Override
     public double compute(double x) {
 
@@ -36,8 +39,8 @@ public class Function implements MathFunction{
                     / (Math.pow(Math.pow(csc.compute(x) - cos.compute(x) * (sec.compute(x) / csc.compute(x)) - cos.compute(x), 3), 3)
                     / cos.compute(x)));
         } else {
-            return (((logBase.log10(x) + ln.compute(x)) / logBase.log3(x)
-                    + Math.pow(logBase.log3(x), 2)) * (logBase.log3(x) / ln.compute(x)))
+            return (((log10.compute(x) + ln.compute(x)) / log3.compute(x)
+                    + Math.pow(log3.compute(x), 2)) * (log3.compute(x) / ln.compute(x)))
                     / ln.compute(x);
         }
     }
