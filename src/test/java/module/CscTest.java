@@ -1,8 +1,9 @@
 package module;
 
 import org.truskovski.math.MathFunction;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,26 +15,33 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CscTest {
 
-    @Mock private MathFunction sinMock;
+    @Mock
+    private MathFunction sinMock;
 
-    @Test
-    void testCscPiHalf() {
-        when(sinMock.compute(Math.PI / 2)).thenReturn(1.0);
+    private static final double DELTA = 1e-6;
+
+    @ParameterizedTest
+    @CsvSource({
+            "1.5707963267948966, 1.0",
+            "0.5235987755982988, 2.0"
+    })
+    void testCscValues(double x, double expected) {
+
+        when(sinMock.compute(x)).thenReturn(Math.sin(x));
+
         Csc csc = new Csc(sinMock);
-        assertEquals(1.0, csc.compute(Math.PI / 2), 1e-6);
+
+        assertEquals(expected, csc.compute(x), DELTA);
     }
 
-    @Test
-    void testCscPiSixth() {
-        when(sinMock.compute(Math.PI / 6)).thenReturn(0.5);
-        Csc csc = new Csc(sinMock);
-        assertEquals(2.0, csc.compute(Math.PI / 6), 1e-6);
-    }
+    @ParameterizedTest
+    @ValueSource(doubles = {0.0})
+    void testCscInfinity(double x) {
 
-    @Test
-    void testCscZero() {
-        when(sinMock.compute(0.0)).thenReturn(0.0);
+        when(sinMock.compute(x)).thenReturn(0.0);
+
         Csc csc = new Csc(sinMock);
-        assertTrue(Double.isInfinite(csc.compute(0.0)));
+
+        assertTrue(Double.isInfinite(csc.compute(x)));
     }
 }
