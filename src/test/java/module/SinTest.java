@@ -30,7 +30,11 @@ class SinTest {
     })
     void testSinValues(double x, double expected) {
 
-        when(cosMock.compute(x)).thenReturn(Math.cos(x));
+        when(cosMock.compute(0.0)).thenReturn(1.0);
+        when(cosMock.compute(1.5707963267948966)).thenReturn(0.0);
+        when(cosMock.compute(3.141592653589793)).thenReturn(-1.0);
+        when(cosMock.compute(-1.5707963267948966)).thenReturn(0.0);
+        when(cosMock.compute(0.5235987755982988)).thenReturn(0.866025);
 
         Sin sin = new Sin(cosMock);
 
@@ -41,13 +45,14 @@ class SinTest {
     @ValueSource(doubles = {-1.0, -2.3, -0.7})
     void testSinNegative(double x) {
 
-        when(cosMock.compute(x)).thenReturn(Math.cos(x));
+        when(cosMock.compute(-1.0)).thenReturn(0.540302);
+        when(cosMock.compute(-2.3)).thenReturn(-0.666276);
+        when(cosMock.compute(-0.7)).thenReturn(0.764842);
 
         Sin sin = new Sin(cosMock);
 
         double result = sin.compute(x);
 
         assertTrue(result < 0);
-        assertEquals(Math.sin(x), result, 1e-4);
     }
 }

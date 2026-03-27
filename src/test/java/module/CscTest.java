@@ -27,7 +27,8 @@ class CscTest {
     })
     void testCscValues(double x, double expected) {
 
-        when(sinMock.compute(x)).thenReturn(Math.sin(x));
+        when(sinMock.compute(1.5707963267948966)).thenReturn(1.0);
+        when(sinMock.compute(0.5235987755982988)).thenReturn(0.5);
 
         Csc csc = new Csc(sinMock);
 
@@ -38,7 +39,7 @@ class CscTest {
     @ValueSource(doubles = {0.0})
     void testCscInfinity(double x) {
 
-        when(sinMock.compute(x)).thenReturn(0.0);
+        when(sinMock.compute(0.0)).thenReturn(0.0);
 
         Csc csc = new Csc(sinMock);
 

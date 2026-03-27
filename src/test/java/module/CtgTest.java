@@ -30,8 +30,11 @@ class CtgTest {
     })
     void testCtgValues(double x, double expected) {
 
-        when(cosMock.compute(x)).thenReturn(Math.cos(x));
-        when(sinMock.compute(x)).thenReturn(Math.sin(x));
+        when(cosMock.compute(0.7853981633974483)).thenReturn(0.707106);
+        when(sinMock.compute(0.7853981633974483)).thenReturn(0.707106);
+
+        when(cosMock.compute(1.5707963267948966)).thenReturn(0.0);
+        when(sinMock.compute(1.5707963267948966)).thenReturn(1.0);
 
         Ctg ctg = new Ctg(cosMock, sinMock);
 
@@ -42,8 +45,8 @@ class CtgTest {
     @ValueSource(doubles = {0.0})
     void testCtgInfinity(double x) {
 
-        when(cosMock.compute(x)).thenReturn(Math.cos(x));
-        when(sinMock.compute(x)).thenReturn(0.0);
+        when(cosMock.compute(0.0)).thenReturn(1.0);
+        when(sinMock.compute(0.0)).thenReturn(0.0);
 
         Ctg ctg = new Ctg(cosMock, sinMock);
 

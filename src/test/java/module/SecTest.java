@@ -28,7 +28,9 @@ class SecTest {
     })
     void testSecValues(double x, double expected) {
 
-        when(cosMock.compute(x)).thenReturn(Math.cos(x));
+        when(cosMock.compute(0.0)).thenReturn(1.0);
+        when(cosMock.compute(3.141592653589793)).thenReturn(-1.0);
+        when(cosMock.compute(1.0471975511965976)).thenReturn(0.5);
 
         Sec sec = new Sec(cosMock);
 
@@ -39,7 +41,7 @@ class SecTest {
     @ValueSource(doubles = {1.5707963267948966})
     void testSecInfinity(double x) {
 
-        when(cosMock.compute(x)).thenReturn(0.0);
+        when(cosMock.compute(1.5707963267948966)).thenReturn(0.0);
 
         Sec sec = new Sec(cosMock);
 

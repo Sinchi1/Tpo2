@@ -28,8 +28,10 @@ class Log10Test {
     })
     void testLog10(double x, double expected) {
 
-        when(lnMock.compute(10.0)).thenReturn(Math.log(10));
-        when(lnMock.compute(x)).thenReturn(Math.log(x));
+        when(lnMock.compute(10.0)).thenReturn(2.302585092994046);
+        when(lnMock.compute(1.0)).thenReturn(0.0);
+        when(lnMock.compute(100.0)).thenReturn(4.605170185988092);
+        when(lnMock.compute(0.1)).thenReturn(-2.302585092994046);
 
         Log10 log10 = new Log10(lnMock);
 

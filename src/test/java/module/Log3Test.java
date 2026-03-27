@@ -5,8 +5,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.truskovski.math.log.Ln;
 import org.truskovski.math.log.Log3;
+import org.truskovski.math.log.Ln;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -28,8 +28,10 @@ class Log3Test {
     })
     void testLog3(double x, double expected) {
 
-        when(lnMock.compute(3.0)).thenReturn(Math.log(3));
-        when(lnMock.compute(x)).thenReturn(Math.log(x));
+        when(lnMock.compute(3.0)).thenReturn(1.0986122886681098);
+        when(lnMock.compute(9.0)).thenReturn(2.1972245773362196);
+        when(lnMock.compute(1.0)).thenReturn(0.0);
+        when(lnMock.compute(27.0)).thenReturn(3.295836866004329);
 
         Log3 log3 = new Log3(lnMock);
 
