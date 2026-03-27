@@ -18,10 +18,8 @@ public class Function implements MathFunction{
     Log3 log3 = new Log3(ln);
     Log10 log10 = new Log10(ln);
 
-
     @Override
     public double compute(double x) {
-
         if (x <= 0) {
             return Math.pow(
                     ((((((Math.pow(cos.compute(x), 3) / cos.compute(x)) * cos.compute(x)) / ctg.compute(x)
