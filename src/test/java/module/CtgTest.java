@@ -1,7 +1,6 @@
 package module;
 
 import org.truskovski.math.MathFunction;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
