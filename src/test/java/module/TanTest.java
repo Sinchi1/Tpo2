@@ -1,7 +1,9 @@
 package module;
 
 import org.truskovski.math.MathFunction;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,34 +15,38 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class TanTest {
 
-    @Mock private MathFunction cosMock;
-    @Mock private MathFunction sinMock;
+    @Mock
+    private MathFunction cosMock;
+
+    @Mock
+    private MathFunction sinMock;
 
     private static final double DELTA = 1e-6;
 
-    @Test
-    void testTanZeroStub() {
-        when(cosMock.compute(0.0)).thenReturn(1.0);
-        when(sinMock.compute(0.0)).thenReturn(0.0);
+    @ParameterizedTest
+    @CsvSource({
+            "0.0, 0.0",
+            "0.7853981633974483, 1.0"
+    })
+    void testTanValues(double x, double expected) {
+
+        when(cosMock.compute(x)).thenReturn(Math.cos(x));
+        when(sinMock.compute(x)).thenReturn(Math.sin(x));
+
         Tan tan = new Tan(cosMock, sinMock);
-        assertEquals(0.0, tan.compute(0.0), DELTA);
+
+        assertEquals(expected, tan.compute(x), DELTA);
     }
 
-    @Test
-    void testTanPiQuarterStub() {
-        double x = Math.PI / 4;
-        when(cosMock.compute(x)).thenReturn(Math.sqrt(2) / 2);
-        when(sinMock.compute(x)).thenReturn(Math.sqrt(2) / 2);
-        Tan tan = new Tan(cosMock, sinMock);
-        assertEquals(1.0, tan.compute(x), DELTA);
-    }
+    @ParameterizedTest
+    @ValueSource(doubles = {1.5707963267948966})
+    void testTanInfinity(double x) {
 
-    @Test
-    void testTanPiHalfStub() {
-        double x = Math.PI / 2;
         when(cosMock.compute(x)).thenReturn(0.0);
-        when(sinMock.compute(x)).thenReturn(1.0);
+        when(sinMock.compute(x)).thenReturn(Math.sin(x));
+
         Tan tan = new Tan(cosMock, sinMock);
+
         assertTrue(Double.isInfinite(tan.compute(x)));
     }
 }

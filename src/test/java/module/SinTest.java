@@ -1,10 +1,12 @@
 package module;
 
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.truskovski.math.MathFunction;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.truskovski.math.trigo.Sin;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,47 +20,34 @@ class SinTest {
 
     private static final double DELTA = 1e-6;
 
-    @Test
-    void testSinZeroWithStub() {
-        when(cosMock.compute(0.0)).thenReturn(1.0);
+    @ParameterizedTest
+    @CsvSource({
+            "0.0, 0.0",
+            "1.5707963267948966, 1.0",
+            "3.141592653589793, 0.0",
+            "-1.5707963267948966, -1.0",
+            "0.5235987755982988, 0.5"
+    })
+    void testSinValues(double x, double expected) {
+
+        when(cosMock.compute(x)).thenReturn(Math.cos(x));
+
         Sin sin = new Sin(cosMock);
-        assertEquals(0.0, sin.compute(0.0), DELTA);
+
+        assertEquals(expected, sin.compute(x), DELTA);
     }
 
-    @Test
-    void testSinPiHalfWithStub() {
-        when(cosMock.compute(Math.PI / 2)).thenReturn(0.0);
-        Sin sin = new Sin(cosMock);
-        assertEquals(1.0, sin.compute(Math.PI / 2), DELTA);
-    }
+    @ParameterizedTest
+    @ValueSource(doubles = {-1.0, -2.3, -0.7})
+    void testSinNegative(double x) {
 
-    @Test
-    void testSinPiWithStub() {
-        when(cosMock.compute(Math.PI)).thenReturn(-1.0);
-        Sin sin = new Sin(cosMock);
-        assertEquals(0.0, sin.compute(Math.PI), DELTA);
-    }
+        when(cosMock.compute(x)).thenReturn(Math.cos(x));
 
-    @Test
-    void testSinMinusPiHalfWithStub() {
-        when(cosMock.compute(-Math.PI / 2)).thenReturn(0.0);
         Sin sin = new Sin(cosMock);
-        assertEquals(-1.0, sin.compute(-Math.PI / 2), DELTA);
-    }
 
-    @Test
-    void testSinPiSixthWithStub() {
-        when(cosMock.compute(Math.PI / 6)).thenReturn(Math.sqrt(3) / 2);
-        Sin sin = new Sin(cosMock);
-        assertEquals(0.5, sin.compute(Math.PI / 6), DELTA);
-    }
+        double result = sin.compute(x);
 
-    @Test
-    void testSinNegativeWithStub() {
-        when(cosMock.compute(-1.0)).thenReturn(Math.cos(-1.0));
-        Sin sin = new Sin(cosMock);
-        double result = sin.compute(-1.0);
         assertTrue(result < 0);
-        assertEquals(Math.sin(-1.0), result, 1e-4);
+        assertEquals(Math.sin(x), result, 1e-4);
     }
 }

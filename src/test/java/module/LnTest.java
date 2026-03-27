@@ -1,7 +1,6 @@
 package module;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,24 +18,15 @@ class LnTest {
         ln = new Ln();
     }
 
-    @Test
-    void testLnOne() {
-        assertEquals(0.0, ln.compute(1.0), DELTA);
-    }
-
-    @Test
-    void testLnE() {
-        assertEquals(1.0, ln.compute(Math.E), DELTA);
-    }
-
-    @Test
-    void testLnESquared() {
-        assertEquals(2.0, ln.compute(Math.E * Math.E), DELTA);
-    }
-
-    @Test
-    void testLnOneOverE() {
-        assertEquals(-1.0, ln.compute(1.0 / Math.E), DELTA);
+    @ParameterizedTest
+    @CsvSource({
+            "1.0, 0.0",
+            "2.718281828459045, 1.0",
+            "7.3890560989306495, 2.0",
+            "0.36787944117144233, -1.0"
+    })
+    void testLnSpecialValues(double x, double expected) {
+        assertEquals(expected, ln.compute(x), DELTA);
     }
 
     @ParameterizedTest
@@ -44,42 +34,41 @@ class LnTest {
             "0.1, -2.302585",
             "0.5, -0.693147",
             "2.0, 0.693147",
-            "3.0, 1.098612",
+            "3.0, 1.098612"
     })
-    void testLnValues(double x, double expected) {
+    void testLnTableValues(double x, double expected) {
         assertEquals(expected, ln.compute(x), 1e-4);
     }
 
-    @Test
-    void testLnZero() {
-        assertThrows(IllegalArgumentException.class, () -> ln.compute(0));
-    }
-
-    @Test
-    void testLnNegative() {
-        assertThrows(IllegalArgumentException.class, () -> ln.compute(-1));
-    }
-
-    @Test
-    void testLnLargeNegative() {
-        assertThrows(IllegalArgumentException.class, () -> ln.compute(-100));
+    @ParameterizedTest
+    @ValueSource(doubles = {0.0, -1.0, -100.0})
+    void testLnInvalidArguments(double x) {
+        assertThrows(IllegalArgumentException.class, () -> ln.compute(x));
     }
 
     @ParameterizedTest
-    @ValueSource(doubles = {0.1, 0.5, 1.5, 2, 5, 10})
+    @ValueSource(doubles = {0.1, 0.5, 1.5, 2.0, 5.0, 10.0})
     void testLnVsMathLog(double x) {
         assertEquals(Math.log(x), ln.compute(x), 1e-5);
     }
 
-    @Test
-    void testLnProduct() {
-        double a = 2.5, b = 4.0;
+    @ParameterizedTest
+    @CsvSource({
+            "2.5, 4.0",
+            "1.2, 3.7",
+            "5.0, 0.8"
+    })
+    void testLnProductProperty(double a, double b) {
         assertEquals(ln.compute(a) + ln.compute(b), ln.compute(a * b), 1e-5);
     }
 
-    @Test
-    void testLnQuotient() {
-        double a = 10.0, b = 3.0;
+    @ParameterizedTest
+    @CsvSource({
+            "10.0, 3.0",
+            "5.5, 2.2",
+            "8.0, 0.5"
+    })
+    void testLnQuotientProperty(double a, double b) {
         assertEquals(ln.compute(a) - ln.compute(b), ln.compute(a / b), 1e-5);
     }
 }

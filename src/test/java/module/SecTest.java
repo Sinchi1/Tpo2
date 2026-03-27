@@ -1,7 +1,9 @@
 package module;
 
 import org.truskovski.math.MathFunction;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,33 +15,34 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class SecTest {
 
-    @Mock private MathFunction cosMock;
+    @Mock
+    private MathFunction cosMock;
 
-    @Test
-    void testSecZeroStub() {
-        when(cosMock.compute(0.0)).thenReturn(1.0);
+    private static final double DELTA = 1e-6;
+
+    @ParameterizedTest
+    @CsvSource({
+            "0.0, 1.0",
+            "3.141592653589793, -1.0",
+            "1.0471975511965976, 2.0"
+    })
+    void testSecValues(double x, double expected) {
+
+        when(cosMock.compute(x)).thenReturn(Math.cos(x));
+
         Sec sec = new Sec(cosMock);
-        assertEquals(1.0, sec.compute(0.0), 1e-6);
+
+        assertEquals(expected, sec.compute(x), DELTA);
     }
 
-    @Test
-    void testSecPiStub() {
-        when(cosMock.compute(Math.PI)).thenReturn(-1.0);
-        Sec sec = new Sec(cosMock);
-        assertEquals(-1.0, sec.compute(Math.PI), 1e-6);
-    }
+    @ParameterizedTest
+    @ValueSource(doubles = {1.5707963267948966})
+    void testSecInfinity(double x) {
 
-    @Test
-    void testSecPiHalfStub() {
-        when(cosMock.compute(Math.PI / 2)).thenReturn(0.0);
-        Sec sec = new Sec(cosMock);
-        assertTrue(Double.isInfinite(sec.compute(Math.PI / 2)));
-    }
+        when(cosMock.compute(x)).thenReturn(0.0);
 
-    @Test
-    void testSecPiThirdStub() {
-        when(cosMock.compute(Math.PI / 3)).thenReturn(0.5);
         Sec sec = new Sec(cosMock);
-        assertEquals(2.0, sec.compute(Math.PI / 3), 1e-6);
+
+        assertTrue(Double.isInfinite(sec.compute(x)));
     }
 }

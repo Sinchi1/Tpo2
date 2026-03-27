@@ -19,7 +19,7 @@ class CtgTest {
     private static final double DELTA = 1e-6;
 
     @Test
-    void testCtgPiQuarterStub() {
+    void testCtgPiQuarter() {
         double x = Math.PI / 4;
         when(cosMock.compute(x)).thenReturn(Math.sqrt(2) / 2);
         when(sinMock.compute(x)).thenReturn(Math.sqrt(2) / 2);
@@ -28,7 +28,7 @@ class CtgTest {
     }
 
     @Test
-    void testCtgPiHalfStub() {
+    void testCtgPiHalf() {
         double x = Math.PI / 2;
         when(cosMock.compute(x)).thenReturn(0.0);
         when(sinMock.compute(x)).thenReturn(1.0);
@@ -37,7 +37,7 @@ class CtgTest {
     }
 
     @Test
-    void testCtgZeroStub() {
+    void testCtgZero() {
         when(cosMock.compute(0.0)).thenReturn(1.0);
         when(sinMock.compute(0.0)).thenReturn(0.0);
         Ctg ctg = new Ctg(cosMock, sinMock);

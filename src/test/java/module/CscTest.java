@@ -17,21 +17,21 @@ class CscTest {
     @Mock private MathFunction sinMock;
 
     @Test
-    void testCscPiHalfStub() {
+    void testCscPiHalf() {
         when(sinMock.compute(Math.PI / 2)).thenReturn(1.0);
         Csc csc = new Csc(sinMock);
         assertEquals(1.0, csc.compute(Math.PI / 2), 1e-6);
     }
 
     @Test
-    void testCscPiSixthStub() {
+    void testCscPiSixth() {
         when(sinMock.compute(Math.PI / 6)).thenReturn(0.5);
         Csc csc = new Csc(sinMock);
         assertEquals(2.0, csc.compute(Math.PI / 6), 1e-6);
     }
 
     @Test
-    void testCscZeroStub() {
+    void testCscZero() {
         when(sinMock.compute(0.0)).thenReturn(0.0);
         Csc csc = new Csc(sinMock);
         assertTrue(Double.isInfinite(csc.compute(0.0)));
