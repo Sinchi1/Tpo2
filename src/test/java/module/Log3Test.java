@@ -28,10 +28,17 @@ class Log3Test {
     })
     void testLog3(double x, double expected) {
 
-        when(lnMock.compute(3.0)).thenReturn(1.0986122886681098);
-        when(lnMock.compute(9.0)).thenReturn(2.1972245773362196);
-        when(lnMock.compute(1.0)).thenReturn(0.0);
-        when(lnMock.compute(27.0)).thenReturn(3.295836866004329);
+        when(lnMock.compute(org.mockito.ArgumentMatchers.anyDouble()))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 3.0) return 1.0986122886681098;
+                    if (arg == 9.0) return 2.1972245773362196;
+                    if (arg == 1.0) return 0.0;
+                    if (arg == 27.0) return 3.295836866004329;
+
+                    return 0.0;
+                });
 
         Log3 log3 = new Log3(lnMock);
 

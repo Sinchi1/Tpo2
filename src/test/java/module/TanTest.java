@@ -30,11 +30,25 @@ class TanTest {
     })
     void testTanValues(double x, double expected) {
 
-        when(cosMock.compute(0.0)).thenReturn(1.0);
-        when(sinMock.compute(0.0)).thenReturn(0.0);
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
 
-        when(cosMock.compute(0.7853981633974483)).thenReturn(0.707106);
-        when(sinMock.compute(0.7853981633974483)).thenReturn(0.707106);
+                    if (arg == 0.0) return 1.0;
+                    if (arg == 0.7853981633974483) return 0.707106;
+
+                    return 0.0;
+                });
+
+        when(sinMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 0.0) return 0.0;
+                    if (arg == 0.7853981633974483) return 0.707106;
+
+                    return 0.0;
+                });
 
         Tan tan = new Tan(cosMock, sinMock);
 

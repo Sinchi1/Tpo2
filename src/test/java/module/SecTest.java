@@ -28,9 +28,16 @@ class SecTest {
     })
     void testSecValues(double x, double expected) {
 
-        when(cosMock.compute(0.0)).thenReturn(1.0);
-        when(cosMock.compute(3.141592653589793)).thenReturn(-1.0);
-        when(cosMock.compute(1.0471975511965976)).thenReturn(0.5);
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 0.0) return 1.0;
+                    if (arg == 3.141592653589793) return -1.0;
+                    if (arg == 1.0471975511965976) return 0.5;
+
+                    return 0.0;
+                });
 
         Sec sec = new Sec(cosMock);
 

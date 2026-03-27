@@ -27,8 +27,15 @@ class CscTest {
     })
     void testCscValues(double x, double expected) {
 
-        when(sinMock.compute(1.5707963267948966)).thenReturn(1.0);
-        when(sinMock.compute(0.5235987755982988)).thenReturn(0.5);
+        when(sinMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 1.5707963267948966) return 1.0;
+                    if (arg == 0.5235987755982988) return 0.5;
+
+                    return 0.0;
+                });
 
         Csc csc = new Csc(sinMock);
 

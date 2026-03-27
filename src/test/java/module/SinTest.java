@@ -30,11 +30,18 @@ class SinTest {
     })
     void testSinValues(double x, double expected) {
 
-        when(cosMock.compute(0.0)).thenReturn(1.0);
-        when(cosMock.compute(1.5707963267948966)).thenReturn(0.0);
-        when(cosMock.compute(3.141592653589793)).thenReturn(-1.0);
-        when(cosMock.compute(-1.5707963267948966)).thenReturn(0.0);
-        when(cosMock.compute(0.5235987755982988)).thenReturn(0.866025);
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 0.0) return 1.0;
+                    if (arg == 1.5707963267948966) return 0.0;
+                    if (arg == 3.141592653589793) return -1.0;
+                    if (arg == -1.5707963267948966) return 0.0;
+                    if (arg == 0.5235987755982988) return 0.866025;
+
+                    return 0.0;
+                });
 
         Sin sin = new Sin(cosMock);
 
@@ -45,9 +52,16 @@ class SinTest {
     @ValueSource(doubles = {-1.0, -2.3, -0.7})
     void testSinNegative(double x) {
 
-        when(cosMock.compute(-1.0)).thenReturn(0.540302);
-        when(cosMock.compute(-2.3)).thenReturn(-0.666276);
-        when(cosMock.compute(-0.7)).thenReturn(0.764842);
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == -1.0) return 0.540302;
+                    if (arg == -2.3) return -0.666276;
+                    if (arg == -0.7) return 0.764842;
+
+                    return 0.0;
+                });
 
         Sin sin = new Sin(cosMock);
 
