@@ -25,8 +25,16 @@ class CtgTest {
 
     @ParameterizedTest
     @CsvSource({
+            "0.5235987755982988, 1.7320508075688772",
             "0.7853981633974483, 1.0",
-            "1.5707963267948966, 0.0"
+            "1.0471975511965976, 0.5773502691896257",
+            "-0.5235987755982988, -1.7320508075688772",
+            "-0.7853981633974483, -1.0",
+            "-1.0471975511965976, -0.5773502691896257",
+            "1.5707963267948966, 0.0",
+            "-1.5707963267948966, 0.0",
+            "7.330382858376184, 0.5773502691896257",
+            "-7.330382858376184, -0.5773502691896257"
     })
     void testCtgValues(double x, double expected) {
 
@@ -34,19 +42,34 @@ class CtgTest {
                 .thenAnswer(invocation -> {
                     double arg = invocation.getArgument(0);
 
-                    if (arg == 0.7853981633974483) return 0.707106;
+                    if (arg == 0.5235987755982988) return 0.5;
+                    if (arg == 0.7853981633974483) return 0.7071067811865476;
+                    if (arg == 1.0471975511965976) return 0.8660254037844386;
+                    if (arg == -0.5235987755982988) return -0.5;
+                    if (arg == -0.7853981633974483) return -0.7071067811865476;
+                    if (arg == -1.0471975511965976) return -0.8660254037844386;
                     if (arg == 1.5707963267948966) return 1.0;
+                    if (arg == -1.5707963267948966) return -1.0;
+                    if (arg == 7.330382858376184) return 0.8660254037844386;
+                    if (arg == -7.330382858376184) return -0.8660254037844386;
 
                     return 0.0;
                 });
-
 
         when(cosMock.compute(x))
                 .thenAnswer(invocation -> {
                     double arg = invocation.getArgument(0);
 
-                    if (arg == 0.7853981633974483) return 0.707106;
+                    if (arg == 0.5235987755982988) return 0.8660254037844386;
+                    if (arg == 0.7853981633974483) return 0.7071067811865476;
+                    if (arg == 1.0471975511965976) return 0.5;
+                    if (arg == -0.5235987755982988) return 0.8660254037844386;
+                    if (arg == -0.7853981633974483) return 0.7071067811865476;
+                    if (arg == -1.0471975511965976) return 0.5;
                     if (arg == 1.5707963267948966) return 0.0;
+                    if (arg == -1.5707963267948966) return 0.0;
+                    if (arg == 7.330382858376184) return 0.5;
+                    if (arg == -7.330382858376184) return 0.5;
 
                     return 0.0;
                 });
@@ -57,11 +80,34 @@ class CtgTest {
     }
 
     @ParameterizedTest
-    @ValueSource(doubles = {0.0})
+    @ValueSource(doubles = {
+            0.0,
+            3.141592653589793,
+            -3.141592653589793
+    })
     void testCtgInfinity(double x) {
 
-        when(cosMock.compute(0.0)).thenReturn(1.0);
-        when(sinMock.compute(0.0)).thenReturn(0.0);
+        when(sinMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 0.0) return 0.0;
+                    if (arg == 3.141592653589793) return 0.0;
+                    if (arg == -3.141592653589793) return 0.0;
+
+                    return 1.0;
+                });
+
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 0.0) return 1.0;
+                    if (arg == 3.141592653589793) return -1.0;
+                    if (arg == -3.141592653589793) return -1.0;
+
+                    return 1.0;
+                });
 
         Ctg ctg = new Ctg(cosMock, sinMock);
 

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FunctionTest {
 
     @ParameterizedTest
-    @ValueSource(doubles = {2.0, 0.1, 5.0,})
+    @ValueSource(doubles = {2.0, 0.1, 5.0})
     void testLogBranch(double x) {
         Function function = new Function();
         double result = function.compute(x);

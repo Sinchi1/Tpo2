@@ -23,10 +23,19 @@ class SinTest {
     @ParameterizedTest
     @CsvSource({
             "0.0, 0.0",
+            "0.5235987755982988, 0.5",
+            "0.7853981633974483, 0.7071067811865476",
+            "1.0471975511965976, 0.8660254037844386",
             "1.5707963267948966, 1.0",
+            "2.0943951023931953, 0.8660254037844386",
+            "2.356194490192345, 0.7071067811865476",
+            "2.6179938779914944, 0.5",
             "3.141592653589793, 0.0",
+            "-0.5235987755982988, -0.5",
+            "-0.7853981633974483, -0.7071067811865476",
+            "-1.0471975511965976, -0.8660254037844386",
             "-1.5707963267948966, -1.0",
-            "0.5235987755982988, 0.5"
+            "8.377580409572781, 0.8660254037844386"
     })
     void testSinValues(double x, double expected) {
 
@@ -35,10 +44,19 @@ class SinTest {
                     double arg = invocation.getArgument(0);
 
                     if (arg == 0.0) return 1.0;
+                    if (arg == 0.5235987755982988) return 0.8660254037844386;
+                    if (arg == 0.7853981633974483) return 0.7071067811865476;
+                    if (arg == 1.0471975511965976) return 0.5;
                     if (arg == 1.5707963267948966) return 0.0;
+                    if (arg == 2.0943951023931953) return -0.5;
+                    if (arg == 2.356194490192345) return -0.7071067811865476;
+                    if (arg == 2.6179938779914944) return -0.8660254037844386;
                     if (arg == 3.141592653589793) return -1.0;
+                    if (arg == -0.5235987755982988) return 0.8660254037844386;
+                    if (arg == -0.7853981633974483) return 0.7071067811865476;
+                    if (arg == -1.0471975511965976) return 0.5;
                     if (arg == -1.5707963267948966) return 0.0;
-                    if (arg == 0.5235987755982988) return 0.866025;
+                    if (arg == 8.377580409572781) return -0.5;
 
                     return 0.0;
                 });
@@ -46,27 +64,5 @@ class SinTest {
         Sin sin = new Sin(cosMock);
 
         assertEquals(expected, sin.compute(x), DELTA);
-    }
-
-    @ParameterizedTest
-    @ValueSource(doubles = {-1.0, -2.3, -0.7})
-    void testSinNegative(double x) {
-
-        when(cosMock.compute(x))
-                .thenAnswer(invocation -> {
-                    double arg = invocation.getArgument(0);
-
-                    if (arg == -1.0) return 0.540302;
-                    if (arg == -2.3) return -0.666276;
-                    if (arg == -0.7) return 0.764842;
-
-                    return 0.0;
-                });
-
-        Sin sin = new Sin(cosMock);
-
-        double result = sin.compute(x);
-
-        assertTrue(result < 0);
     }
 }

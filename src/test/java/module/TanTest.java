@@ -26,7 +26,12 @@ class TanTest {
     @ParameterizedTest
     @CsvSource({
             "0.0, 0.0",
-            "0.7853981633974483, 1.0"
+            "0.5235987755982988, 0.5773502691896257",
+            "0.7853981633974483, 1.0",
+            "1.0471975511965976, 1.7320508075688772",
+            "-0.5235987755982988, -0.5773502691896257",
+            "-0.7853981633974483, -1.0",
+            "-1.0471975511965976, -1.7320508075688772"
     })
     void testTanValues(double x, double expected) {
 
@@ -35,7 +40,12 @@ class TanTest {
                     double arg = invocation.getArgument(0);
 
                     if (arg == 0.0) return 1.0;
-                    if (arg == 0.7853981633974483) return 0.707106;
+                    if (arg == 0.5235987755982988) return 0.8660254037844386;
+                    if (arg == 0.7853981633974483) return 0.7071067811865476;
+                    if (arg == 1.0471975511965976) return 0.5;
+                    if (arg == -0.5235987755982988) return 0.8660254037844386;
+                    if (arg == -0.7853981633974483) return 0.7071067811865476;
+                    if (arg == -1.0471975511965976) return 0.5;
 
                     return 0.0;
                 });
@@ -45,7 +55,12 @@ class TanTest {
                     double arg = invocation.getArgument(0);
 
                     if (arg == 0.0) return 0.0;
-                    if (arg == 0.7853981633974483) return 0.707106;
+                    if (arg == 0.5235987755982988) return 0.5;
+                    if (arg == 0.7853981633974483) return 0.7071067811865476;
+                    if (arg == 1.0471975511965976) return 0.8660254037844386;
+                    if (arg == -0.5235987755982988) return -0.5;
+                    if (arg == -0.7853981633974483) return -0.7071067811865476;
+                    if (arg == -1.0471975511965976) return -0.8660254037844386;
 
                     return 0.0;
                 });
@@ -56,14 +71,66 @@ class TanTest {
     }
 
     @ParameterizedTest
-    @ValueSource(doubles = {1.5707963267948966})
+    @CsvSource({
+            "1.5707963267948966",
+            "-1.5707963267948966"
+    })
     void testTanInfinity(double x) {
 
-        when(cosMock.compute(1.5707963267948966)).thenReturn(0.0);
-        when(sinMock.compute(1.5707963267948966)).thenReturn(1.0);
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 1.5707963267948966) return 0.0;
+                    if (arg == -1.5707963267948966) return 0.0;
+
+                    return 0.0;
+                });
+
+        when(sinMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 1.5707963267948966) return 1.0;
+                    if (arg == -1.5707963267948966) return -1.0;
+
+                    return 0.0;
+                });
 
         Tan tan = new Tan(cosMock, sinMock);
 
         assertTrue(Double.isInfinite(tan.compute(x)));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "7.330382858376184, 1.7320508075688772",
+            "-7.330382858376184, -1.7320508075688772"
+    })
+    void testTanPeriod(double x, double expected) {
+
+        when(cosMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 7.330382858376184) return 0.5;
+                    if (arg == -7.330382858376184) return 0.5;
+
+                    return 0.0;
+                });
+
+        when(sinMock.compute(x))
+                .thenAnswer(invocation -> {
+                    double arg = invocation.getArgument(0);
+
+                    if (arg == 7.330382858376184) return 0.8660254037844386;
+                    if (arg == -7.330382858376184) return -0.8660254037844386;
+
+                    return 0.0;
+                });
+
+        Tan tan = new Tan(cosMock, sinMock);
+
+        assertEquals(expected, tan.compute(x), DELTA);
     }
 }

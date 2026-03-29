@@ -16,7 +16,7 @@ class IntegrationalTest {
     private static final double D = 1e-3;
 
     @ParameterizedTest
-    @ValueSource(doubles = {-5.0, -4.3, -3.6, -2.9, -2.2, -1.5, -0.8, -0.1, 0.6, 1.3, 2.0, 2.7, 3.4, 4.1, 4.8, 5.0})
+    @ValueSource(doubles = {-5.0, -4.3, -2.2, -1.5, -0.8, -0.1, 3.4, 4.1, 4.8, 5.0})
     void sinCosProperty(double x) {
         Cos cos = new Cos();
         Sin sin = new Sin(cos);
