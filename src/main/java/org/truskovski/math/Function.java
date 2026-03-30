@@ -18,6 +18,20 @@ public class Function implements MathFunction{
     Log3 log3 = new Log3(ln);
     Log10 log10 = new Log10(ln);
 
+    public Function(Cos cos, Sin sin, Sec sec, Tan tan, Csc csc, Ctg ctg, Ln ln, Log3 log3, Log10 log10) {
+        this.cos = cos;
+        this.sin = sin;
+        this.sec = sec;
+        this.tan = tan;
+        this.csc = csc;
+        this.ctg = ctg;
+        this.ln = ln;
+        this.log3 = log3;
+        this.log10 = log10;
+    }
+
+    public Function(){}
+
     @Override
     public double compute(double x) {
         if (x <= 0) {
@@ -42,4 +56,5 @@ public class Function implements MathFunction{
                     / ln.compute(x);
         }
     }
+
 }

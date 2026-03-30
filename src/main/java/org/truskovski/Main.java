@@ -25,20 +25,22 @@ public class Main {
 
         var writer =  new CsvWriter();
 
-        Function function = new Function();
+        Function function = new Function(cos, sin, sec, tan, csc, ctg, ln, log3, log10);
 
-        writer.write("cos.csv", cos::compute, -10, 10, 0.1);
-        writer.write("sin.csv", sin::compute, -10, 10, 0.1);
-        writer.write("tan.csv", tan::compute, -10, 10, 0.1);
-        writer.write("sec.csv", sec::compute, -10, 10, 0.1);
-        writer.write("ctg.csv", ctg::compute, -10, 10, 0.1);
-        writer.write("csc.csv", csc::compute, -10, 10, 0.1);
+        System.out.println(function.compute(-1.5708));
 
-        writer.write("ln.csv", ln::compute, 0.1, 10, 0.1);
-        writer.write("ln.csv", log3::compute, 0.1, 10, 0.1);
-        writer.write("ln.csv", log10::compute, 0.1, 10, 0.1);
-
-        writer.write("function.csv", function::compute, -10, 10, 0.1);
+//        writer.write("cos.csv", cos::compute, -10, 10, 0.1);
+//        writer.write("sin.csv", sin::compute, -10, 10, 0.1);
+//        writer.write("tan.csv", tan::compute, -10, 10, 0.1);
+//        writer.write("sec.csv", sec::compute, -10, 10, 0.1);
+//        writer.write("ctg.csv", ctg::compute, -10, 10, 0.1);
+//        writer.write("csc.csv", csc::compute, -10, 10, 0.1);
+//
+//        writer.write("ln.csv", ln::compute, 0.1, 10, 0.1);
+//        writer.write("ln.csv", log3::compute, 0.1, 10, 0.1);
+//        writer.write("ln.csv", log10::compute, 0.1, 10, 0.1);
+//
+//        writer.write("function.csv", function::compute, -10, 10, 0.1);
 
 
     }
