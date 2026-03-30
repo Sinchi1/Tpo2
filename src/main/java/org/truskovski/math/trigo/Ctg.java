@@ -18,7 +18,7 @@ public class Ctg  implements MathFunction {
         double s = sin.compute(x);
         double c = cos.compute(x);
 
-        if (Math.abs(s) < 1e-12) {
+        if (x % Math.PI == 0.0) {
             return Double.POSITIVE_INFINITY;
         }
 
